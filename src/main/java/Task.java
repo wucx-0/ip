@@ -1,9 +1,9 @@
-public class Task {
-    private String task;
+abstract class Task {
+    private String description;
     private boolean complete;
 
-    public Task(String task) {
-        this.task = task;
+    public Task(String description) {
+        this.description = description;
         this.complete = false;
     }
 
@@ -19,9 +19,15 @@ public class Task {
         this.complete = false;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
+    public abstract String getType();
+
     @Override
     public String toString() {
         String status = isComplete() ? "[X]" : "[]";
-        return status + " " + task;
+        return "[" + getType() + "]" + status + " " + description;
     }
 }

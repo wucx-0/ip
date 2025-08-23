@@ -39,6 +39,14 @@ public class UI {
         System.out.println("____________________________________________________________");
     }
 
+    public void showTaskAdded(Task task, int totalTasks) {
+        System.out.println("____________________________________________________________");
+        System.out.println(" Got it. I've added this task:");
+        System.out.println("   " + task);
+        System.out.println(" Now you have " + totalTasks + " tasks in the list.");
+        System.out.println("____________________________________________________________");
+    }
+
     public void showTaskMarkedNotDone(Task task) {
         System.out.println("____________________________________________________________");
         System.out.println(" OK, I've marked this task as not done yet:");
@@ -46,17 +54,28 @@ public class UI {
         System.out.println("____________________________________________________________");
     }
 
+    public void showTaskDeleted(Task task, int remainingTasks) {
+        System.out.println("____________________________________________________________");
+        System.out.println(" Noted. I've removed this task:");
+        System.out.println("   " + task);
+        System.out.println(" Now you have " + remainingTasks + " tasks in the list.");
+        System.out.println("____________________________________________________________");
+    }
+
+
+
     public void showInvalidTaskNumber() {
         System.out.println("____________________________________________________________");
         System.out.println(" OOPS!!! Invalid task number.");
         System.out.println("____________________________________________________________");
     }
 
-    public void showInvalidMarkCommand() {
+    public void showError(String errorMessage) {
         System.out.println("____________________________________________________________");
-        System.out.println(" OOPS!!! Please specify which task to mark (e.g., 'mark 2').");
+        System.out.println(" OOPS!!! " + errorMessage);
         System.out.println("____________________________________________________________");
     }
+
 
     public String readCommand() {
         return scanner.nextLine();

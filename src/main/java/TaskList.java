@@ -1,56 +1,58 @@
+import java.util.ArrayList;
+
 public class TaskList {
-    private Task[] tasks;
-    private int size;
-    private static final int MAX_TASKS = 100;
+    private ArrayList<Task> tasks;
 
     public TaskList() {
-        this.tasks = new Task[MAX_TASKS];
-        this.size = 0;
+        this.tasks = new ArrayList<>();
     }
 
-    public void addTask(String task) {
-        if (this.size < MAX_TASKS) {
-            this.tasks[size] = new Task(task);
-            this.size++;
-        }
+    public void addTask(Task task){
+        tasks.add(task);
     }
 
-    public Task getTask(int index) {
-        if (index >= 0 && index < size) {
-            return this.tasks[index];
+    public Task getTask(int index) throws BenException {
+        validateIndex(index);
+        return tasks.get(index - 1);
+
+    }
+
+    public Task deleteTask(int index) throws BenException {
+        validateIndex(index);
+        return tasks.remove(index - 1);
+    }
+
+    public boolean mark(int index) throws BenException{
+        validateIndex(index);
+        this.tasks.get(index - 1).markComplete();
+        return true;
+    }
+
+    public boolean unmark(int index) throws BenException{
+        validateIndex(index);
+        this.tasks.get(index - 1).markIncomplete();
+        return true;
+    }
+
+    private void validateIndex(int index) throws BenException {
+        if (index < 1 || index > tasks.size()) {
+            throw new BenException("Invalid task number! Please choose a number between 1 and " + tasks.size() + ".");
         }
-        return null;
     }
 
     public int getSize() {
-        return this.size;
-    }
-
-    public boolean mark(int index) {
-        if (index >= 1 && index < size + 1) {
-            this.tasks[index - 1].markComplete();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean unmark(int index) {
-        if (index >= 1 && index < size + 1) {
-            this.tasks[index - 1].markIncomplete();
-            return true;
-        }
-        return false;
+        return this.tasks.size();
     }
 
     @Override
     public String toString() {
-        if (size == 0) {
+        if (tasks.isEmpty()) {
             return "No tasks in your list.";
         }
 
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < size; i++) {
-            result.append(i + 1).append(".").append(tasks[i]).append("\n");
+        for (int i = 0; i < this.getSize(); i++) {
+            result.append(i + 1).append(".").append(tasks.get(i)).append("\n");
         }
         return result.toString().trim();
     }
