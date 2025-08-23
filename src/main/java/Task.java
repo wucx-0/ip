@@ -11,8 +11,12 @@ public class Task {
         return complete;
     }
 
-    public void changeCompletion() {
-        this.complete = !this.complete;
+    public void markComplete() {
+        this.complete = true;
+    }
+
+    public void markIncomplete() {
+        this.complete = false;
     }
 
     @Override
