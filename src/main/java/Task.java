@@ -27,7 +27,7 @@ abstract class Task {
 
     @Override
     public String toString() {
-        String status = isComplete() ? "[X]" : "[]";
+        String status = isComplete() ? "[X]" : "[ ]";
         return "[" + getType() + "]" + status + " " + description;
     }
 }
