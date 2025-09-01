@@ -11,7 +11,7 @@ public class Storage {
         this.filePath = filePath;
     }
 
-    public ArrayList<Task> loadTask() throws BenException {
+    public ArrayList<Task> loadTasks() throws BenException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
 
