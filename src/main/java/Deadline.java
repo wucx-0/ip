@@ -11,6 +11,10 @@ class Deadline extends Task {
         return "D";
     }
 
+    public String getDeadline() {
+        return this.by;
+    }
+
     @Override
     public String toString() {
         String status = isComplete() ? "[X]" : "[ ]";

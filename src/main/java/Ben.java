@@ -3,11 +3,20 @@ import java.util.Scanner;
 public class Ben {
     private TaskList tasks;
     private UI ui;
+    private Storage storage;
     private String name = "Ben";
+    private static final String FILE_PATH = "./data/ben.txt";
 
     public Ben() {
         this.ui = new UI();
-        this.tasks = new TaskList();
+        this.storage = new Storage(FILE_PATH);
+        try {
+            this.tasks = new TaskList(storage.loadTasks());
+        } catch (BenException e) {
+            ui.showError("Problem loading tasks: " + e.getMessage());
+            this.tasks = new TaskList();
+        }
+        this.tasks.setStorage(storage);
     }
 
     public void run() throws BenException{
