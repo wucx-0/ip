@@ -44,7 +44,6 @@ public class Ben {
             ui.showTaskList(tasks);
         } else if (command.startsWith("mark ")) {
             handleMarkCommand(command);
-
         } else if (command.startsWith("unmark ")) {
             handleUnmarkCommand(command);
         } else if (command.startsWith("delete ")) {
@@ -55,6 +54,8 @@ public class Ben {
             handleDeadlineCommand(command);
         } else if (command.startsWith("event ")) {
             handleEventCommand(command);
+        } else if (command.startsWith("due ")) {
+            handleDueCommand(command);
         } else if (command.equals("todo") || command.equals("deadline") || command.equals("event")) {
             throw new BenException("The description cannot be empty! Please specify what you want to " + command + ".");
         } else if (command.isEmpty()) {
@@ -84,7 +85,7 @@ public class Ben {
 
         String[] parts = content.split(" /by ", 2);
         if (parts.length != 2) {
-            throw new BenException("Please use format: deadline <description> /by <time>");
+            throw new BenException("Please use format: deadline <description> /by <yyyy-mm-dd>");
         }
 
         String description = parts[0].trim();
@@ -94,9 +95,10 @@ public class Ben {
             throw new BenException("The description of a deadline cannot be empty.");
         }
         if (by.isEmpty()) {
-            throw new BenException("The deadline time cannot be empty.");
+            throw new BenException("The deadline date cannot be empty.");
         }
 
+        // The Deadline constructor will parse the date and throw BenException if invalid
         Task deadline = new Deadline(description, by);
         tasks.addTask(deadline);
         ui.showTaskAdded(deadline, tasks.getSize());
@@ -132,6 +134,16 @@ public class Ben {
         Task event = new Event(description, from, to);
         tasks.addTask(event);
         ui.showTaskAdded(event, tasks.getSize());
+    }
+
+    // Stretch goal: Find tasks due on a specific date
+    private void handleDueCommand(String command) throws BenException {
+        String dateString = command.substring(4).trim();
+        if (dateString.isEmpty()) {
+            throw new BenException("Please specify a date! Format: due <yyyy-mm-dd>");
+        }
+
+        tasks.showTasksDueOn(dateString);
     }
 
     private void handleMarkCommand(String command) throws BenException {
