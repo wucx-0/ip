@@ -1,19 +1,19 @@
 ____________________________________________________________
- Hello! I'm Ben
+ Hello! I'm ben.Ben
  What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Got it. I've added this ben.task:
    [T][ ] read book
  Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Got it. I've added this ben.task:
    [D][ ] submit assignment (by: Sunday)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Got it. I've added this ben.task:
    [E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
  Now you have 3 tasks in the list.
 ____________________________________________________________
@@ -23,11 +23,11 @@ ____________________________________________________________
 3.[E][ ] project meeting (from: Mon 2pm to: Mon 4pm)
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Nice! I've marked this ben.task as done:
    [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Nice! I've marked this ben.task as done:
    [E][X] project meeting (from: Mon 2pm to: Mon 4pm)
 ____________________________________________________________
 ____________________________________________________________
@@ -36,7 +36,7 @@ ____________________________________________________________
 3.[E][X] project meeting (from: Mon 2pm to: Mon 4pm)
 ____________________________________________________________
 ____________________________________________________________
- OK, I've marked this task as not done yet:
+ OK, I've marked this ben.task as not done yet:
    [T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
@@ -45,7 +45,7 @@ ____________________________________________________________
 3.[E][X] project meeting (from: Mon 2pm to: Mon 4pm)
 ____________________________________________________________
 ____________________________________________________________
- Noted. I've removed this task:
+ Noted. I've removed this ben.task:
    [D][ ] submit assignment (by: Sunday)
  Now you have 2 tasks in the list.
 ____________________________________________________________

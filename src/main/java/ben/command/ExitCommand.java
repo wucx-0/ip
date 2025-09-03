@@ -1,3 +1,10 @@
+package ben.command;
+
+import ben.BenException;
+import ben.storage.Storage;
+import ben.task.TaskList;
+import ben.ui.UI;
+
 public class ExitCommand extends Command {
 
     @Override

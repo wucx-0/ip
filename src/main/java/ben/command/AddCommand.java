@@ -1,3 +1,14 @@
+package ben.command;
+
+import ben.BenException;
+import ben.storage.Storage;
+import ben.task.Deadline;
+import ben.task.Event;
+import ben.task.Task;
+import ben.task.TaskList;
+import ben.task.ToDo;
+import ben.ui.UI;
+
 public class AddCommand extends Command {
     private String taskType;
     private String arguments;
@@ -25,7 +36,7 @@ public class AddCommand extends Command {
                 break;
 
             default:
-                throw new BenException("Unknown task type: " + taskType);
+                throw new BenException("Unknown ben.task type: " + taskType);
         }
 
         tasks.addTask(task);
