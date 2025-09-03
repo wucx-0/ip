@@ -1,13 +1,16 @@
+package ben.task;
+
+import ben.BenException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-class Deadline extends Task {
+public class Deadline extends Task {
     private LocalDate by;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    public Deadline(String description, String byString) throws BenException{
+    public Deadline(String description, String byString) throws BenException {
         super(description);
         this.by = parseDate(byString);
     }

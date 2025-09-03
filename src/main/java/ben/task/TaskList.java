@@ -1,3 +1,10 @@
+package ben.task;
+
+import ben.BenException;
+import ben.storage.Storage;
+import ben.ui.UI;
+
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -87,7 +94,7 @@ public class TaskList {
 
     private void validateIndex(int index) throws BenException {
         if (index < 1 || index > tasks.size()) {
-            throw new BenException("Invalid task number! Please choose a number between 1 and " + tasks.size() + ".");
+            throw new BenException("Invalid ben.task number! Please choose a number between 1 and " + tasks.size() + ".");
         }
     }
 

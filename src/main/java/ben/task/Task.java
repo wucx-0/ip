@@ -1,4 +1,6 @@
-abstract class Task {
+package ben.task;
+
+public abstract class Task {
     private String description;
     private boolean complete;
 

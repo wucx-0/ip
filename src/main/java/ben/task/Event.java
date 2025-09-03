@@ -1,8 +1,12 @@
+package ben.task;
+
+import ben.BenException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-class Event extends Task {
+public class Event extends Task {
     private LocalDateTime from;
     private LocalDateTime to;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
@@ -14,7 +18,7 @@ class Event extends Task {
         this.to = parseDateTime(toString);
     }
 
-    // Constructor for loading from storage (already parsed date-time)
+    // Constructor for loading from ben.storage (already parsed date-time)
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
         this.from = from;

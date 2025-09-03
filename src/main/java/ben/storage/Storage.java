@@ -1,3 +1,11 @@
+package ben.storage;
+
+import ben.BenException;
+import ben.task.Deadline;
+import ben.task.Event;
+import ben.task.Task;
+import ben.task.ToDo;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -83,7 +91,7 @@ public class Storage {
                     break;
                 case "D":
                     if (parts.length >= 4) {
-                        // Parse the date from storage format
+                        // Parse the date from ben.storage format
                         LocalDate byDate = LocalDate.parse(parts[3], DATE_STORAGE_FORMAT);
                         task = new Deadline(description, byDate);
                     }
@@ -96,7 +104,7 @@ public class Storage {
             }
         } catch (Exception e) {
             // Skip corrupted entries
-            System.err.println("Warning: Skipping corrupted task entry: " + line);
+            System.err.println("Warning: Skipping corrupted ben.task entry: " + line);
             return null;
         }
 
@@ -114,7 +122,7 @@ public class Storage {
 
         if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            // Save date in storage format (yyyy-MM-dd)
+            // Save date in ben.storage format (yyyy-MM-dd)
             String dateString = deadline.getBy().format(DATE_STORAGE_FORMAT);
             return type + " | " + status + " | " + description + " | " + dateString;
         } else if (task instanceof Event) {

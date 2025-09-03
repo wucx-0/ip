@@ -1,4 +1,12 @@
+package ben.ui;
+
+import ben.task.Task;
+import ben.task.TaskList;
+
 import java.util.Scanner;
+
+import ben.task.Task;
+import ben.task.TaskList;
 
 public class UI {
     private Scanner scanner;
@@ -36,23 +44,23 @@ public class UI {
     }
 
     public void showTaskMarkedDone(Task task) {
-        System.out.println(" Nice! I've marked this task as done:");
+        System.out.println(" Nice! I've marked this ben.task as done:");
         System.out.println("   " + task);
     }
 
     public void showTaskAdded(Task task, int totalTasks) {
-        System.out.println(" Got it. I've added this task:");
+        System.out.println(" Got it. I've added this ben.task:");
         System.out.println("   " + task);
         System.out.println(" Now you have " + totalTasks + " tasks in the list.");
     }
 
     public void showTaskMarkedNotDone(Task task) {
-        System.out.println(" OK, I've marked this task as not done yet:");
+        System.out.println(" OK, I've marked this ben.task as not done yet:");
         System.out.println("   " + task);
     }
 
     public void showTaskDeleted(Task task, int remainingTasks) {
-        System.out.println(" Noted. I've removed this task:");
+        System.out.println(" Noted. I've removed this ben.task:");
         System.out.println("   " + task);
         System.out.println(" Now you have " + remainingTasks + " tasks in the list.");
     }

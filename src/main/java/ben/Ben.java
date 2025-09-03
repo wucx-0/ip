@@ -1,8 +1,16 @@
+package ben;
+
+import ben.command.Command;
+import ben.parser.Parser;
+import ben.storage.Storage;
+import ben.task.TaskList;
+import ben.ui.UI;
+
 public class Ben {
     private TaskList tasks;
     private UI ui;
     private Storage storage;
-    private String name = "Ben";
+    private String name = "ben.Ben";
     private static final String FILE_PATH = "./data/ben.txt";
 
     public Ben() {
