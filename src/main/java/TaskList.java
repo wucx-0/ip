@@ -1,15 +1,22 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class TaskList {
     private ArrayList<Task> tasks;
     private Storage storage;
+    private UI ui;
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public TaskList() {
         this.tasks = new ArrayList<>();
+        this.ui = new UI(); // For showing results
     }
 
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
+        this.ui = new UI(); // For showing results
     }
 
     public void setStorage(Storage storage) {
@@ -45,6 +52,37 @@ public class TaskList {
         this.tasks.get(index - 1).markIncomplete();
         saveToStorage();
         return true;
+    }
+
+    // Stretch goal: Show tasks due on a specific date
+    public void showTasksDueOn(String dateString) throws BenException {
+        LocalDate targetDate;
+        try {
+            targetDate = LocalDate.parse(dateString, INPUT_FORMAT);
+        } catch (DateTimeParseException e) {
+            throw new BenException("Invalid date format! Please use yyyy-mm-dd format (e.g., 2019-12-25)");
+        }
+
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task instanceof Deadline) {
+                Deadline deadline = (Deadline) task;
+                if (deadline.getBy().equals(targetDate)) {
+                    matchingTasks.add(task);
+                }
+            }
+        }
+
+        if (matchingTasks.isEmpty()) {
+            ui.showMessage("No deadlines found for " + targetDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy")));
+        } else {
+            StringBuilder result = new StringBuilder();
+            result.append("Tasks due on ").append(targetDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))).append(":\n");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                result.append(" ").append(i + 1).append(".").append(matchingTasks.get(i)).append("\n");
+            }
+            ui.showMessage(result.toString().trim());
+        }
     }
 
     private void validateIndex(int index) throws BenException {

@@ -1,11 +1,11 @@
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Storage {
     private String filePath;
+    private static final DateTimeFormatter DATE_STORAGE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -15,11 +15,13 @@ public class Storage {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
 
+        // Create directory if it doesn't exist
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
         }
 
+        // Return empty list if file doesn't exist
         if (!file.exists()) {
             return tasks;
         }
@@ -27,7 +29,7 @@ public class Storage {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                Task task = parseTasks(line.trim());
+                Task task = parseTask(line.trim());
                 if (task != null) {
                     tasks.add(task);
                 }
@@ -42,6 +44,7 @@ public class Storage {
     public void saveTasks(ArrayList<Task> tasks) throws BenException {
         File file = new File(filePath);
 
+        // Create directory if it doesn't exist
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
@@ -56,13 +59,14 @@ public class Storage {
         }
     }
 
-    private Task parseTasks(String line) throws BenException {
+    private Task parseTask(String line) throws BenException {
         if (line.isEmpty()) {
             return null;
         }
 
         String[] parts = line.split(" \\| ");
         if (parts.length < 3) {
+            // Handle corrupted data - skip this line
             return null;
         }
 
@@ -72,20 +76,28 @@ public class Storage {
 
         Task task = null;
 
-        switch (type) {
-            case "T":
-                task = new ToDo(description);
-                break;
-            case "D":
-                if (parts.length >= 4) {
-                    task = new Deadline(description, parts[3]);
-                }
-                break;
-            case "E":
-                if (parts.length >= 5) {
-                    task = new Event(description, parts[3], parts[4]);
-                }
-                break;
+        try {
+            switch (type) {
+                case "T":
+                    task = new ToDo(description);
+                    break;
+                case "D":
+                    if (parts.length >= 4) {
+                        // Parse the date from storage format
+                        LocalDate byDate = LocalDate.parse(parts[3], DATE_STORAGE_FORMAT);
+                        task = new Deadline(description, byDate);
+                    }
+                    break;
+                case "E":
+                    if (parts.length >= 5) {
+                        task = new Event(description, parts[3], parts[4]);
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            // Skip corrupted entries
+            System.err.println("Warning: Skipping corrupted task entry: " + line);
+            return null;
         }
 
         if (task != null && isDone) {
@@ -102,7 +114,9 @@ public class Storage {
 
         if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return type + " | " + status + " | " + description + " | " + deadline.getDeadline();
+            // Save date in storage format (yyyy-MM-dd)
+            String dateString = deadline.getBy().format(DATE_STORAGE_FORMAT);
+            return type + " | " + status + " | " + description + " | " + dateString;
         } else if (task instanceof Event) {
             Event event = (Event) task;
             return type + " | " + status + " | " + description + " | " + event.getFrom() + " | " + event.getTo();
