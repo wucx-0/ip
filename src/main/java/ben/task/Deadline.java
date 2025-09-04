@@ -9,7 +9,7 @@ import java.time.format.DateTimeParseException;
  * Represents a task with a specific deadline date and time.
  */
 public class Deadline extends Task {
-    private LocalDate by;
+    private LocalDate deadline;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
@@ -18,12 +18,12 @@ public class Deadline extends Task {
      * Parses the date string into a LocalDate object for internal storage.
      *
      * @param description the task description
-     * @param byString the due date in yyyy-MM-dd format
+     * @param deadlineString the due date in yyyy-MM-dd format
      * @throws BenException if the date format is invalid or cannot be parsed
      */
-    public Deadline(String description, String byString) throws BenException {
+    public Deadline(String description, String deadlineString) throws BenException {
         super(description);
-        this.by = parseDate(byString);
+        this.deadline = parseDate(deadlineString);
     }
 
     /**
@@ -31,11 +31,11 @@ public class Deadline extends Task {
      * Used when loading from storage where date is already parsed.
      *
      * @param description the task description
-     * @param by the due date as a LocalDate object
+     * @param deadline the due date as a LocalDate object
      */
-    public Deadline(String description, LocalDate by) {
+    public Deadline(String description, LocalDate deadline) {
         super(description);
-        this.by = by;
+        this.deadline = deadline;
     }
 
     private LocalDate parseDate(String dateString) throws BenException {
@@ -51,8 +51,8 @@ public class Deadline extends Task {
      *
      * @return the due date as a LocalDate object
      */
-    public LocalDate getBy() {
-        return by;
+    public LocalDate getDeadline() {
+        return deadline;
     }
 
     /**
@@ -61,7 +61,7 @@ public class Deadline extends Task {
      * @return the due date in "MMM dd yyyy" format (e.g., "Dec 25 2019")
      */
     public String getByString() {
-        return by.format(OUTPUT_FORMAT);
+        return deadline.format(OUTPUT_FORMAT);
     }
 
     @Override
@@ -72,6 +72,6 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         String status = isComplete() ? "[X]" : "[ ]";
-        return "[" + getType() + "]" + status + " " + super.getDescription() + " (by: " + getByString() + ")";
+        return "[" + getType() + "]" + status + " " + super.getDescription() + " (deadline: " + getByString() + ")";
     }
 }

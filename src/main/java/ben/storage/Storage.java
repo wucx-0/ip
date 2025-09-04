@@ -140,11 +140,11 @@ public class Storage {
         if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
             // Save date in ben.storage format (yyyy-MM-dd)
-            String dateString = deadline.getBy().format(DATE_STORAGE_FORMAT);
+            String dateString = deadline.getDeadline().format(DATE_STORAGE_FORMAT);
             return type + " | " + status + " | " + description + " | " + dateString;
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            return type + " | " + status + " | " + description + " | " + event.getFrom() + " | " + event.getTo();
+            return type + " | " + status + " | " + description + " | " + event.getStartTime() + " | " + event.getEndTime();
         } else {
             return type + " | " + status + " | " + description;
         }
