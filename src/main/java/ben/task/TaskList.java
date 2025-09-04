@@ -138,6 +138,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Searches for tasks containing the specified keyword and displays results.
+     * Performs case-insensitive search on task descriptions.
+     *
+     * @param keyword the search term to look for in task descriptions
+     * @param ui the UI component used to display search results
+     */
     public void findTasksContaining(String keyword, UI ui) {
         ArrayList<Task> matchingTasks = new ArrayList<>();
 
