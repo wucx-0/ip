@@ -6,18 +6,18 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Deadline extends Task {
-    private LocalDate by;
+    private LocalDate deadline;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     public Deadline(String description, String byString) throws BenException {
         super(description);
-        this.by = parseDate(byString);
+        this.deadline = parseDate(byString);
     }
 
-    public Deadline(String description, LocalDate by) {
+    public Deadline(String description, LocalDate deadline) {
         super(description);
-        this.by = by;
+        this.deadline = deadline;
     }
 
     private LocalDate parseDate(String dateString) throws BenException {
@@ -28,12 +28,12 @@ public class Deadline extends Task {
         }
     }
 
-    public LocalDate getBy() {
-        return by;
+    public LocalDate getDeadline() {
+        return deadline;
     }
 
     public String getByString() {
-        return by.format(OUTPUT_FORMAT);
+        return deadline.format(OUTPUT_FORMAT);
     }
 
     @Override
@@ -44,6 +44,6 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         String status = isComplete() ? "[X]" : "[ ]";
-        return "[" + getType() + "]" + status + " " + super.getDescription() + " (by: " + getByString() + ")";
+        return "[" + getType() + "]" + status + " " + super.getDescription() + " (deadline: " + getByString() + ")";
     }
 }

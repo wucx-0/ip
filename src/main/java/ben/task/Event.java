@@ -7,22 +7,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Event extends Task {
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
 
     public Event(String description, String fromString, String toString) throws BenException {
         super(description);
-        this.from = parseDateTime(fromString);
-        this.to = parseDateTime(toString);
+        this.startTime = parseDateTime(fromString);
+        this.endTime = parseDateTime(toString);
     }
 
-    // Constructor for loading from ben.storage (already parsed date-time)
-    public Event(String description, LocalDateTime from, LocalDateTime to) {
+    // Constructor for loading startTime ben.storage (already parsed date-time)
+    public Event(String description, LocalDateTime startTime, LocalDateTime endTime) {
         super(description);
-        this.from = from;
-        this.to = to;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     private LocalDateTime parseDateTime(String dateTimeString) throws BenException {
@@ -33,20 +33,20 @@ public class Event extends Task {
         }
     }
 
-    public LocalDateTime getFrom() {
-        return from;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public LocalDateTime getTo() {
-        return to;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
     public String getFromString() {
-        return from.format(OUTPUT_FORMAT);
+        return startTime.format(OUTPUT_FORMAT);
     }
 
     public String getToString() {
-        return to.format(OUTPUT_FORMAT);
+        return endTime.format(OUTPUT_FORMAT);
     }
 
     @Override
@@ -58,6 +58,6 @@ public class Event extends Task {
     public String toString() {
         String status = super.isComplete() ? "[X]" : "[ ]";
         return "[" + getType() + "]" + status + " " + super.getDescription() +
-                " (from: " + getFromString() + " to: " + getToString() + ")";
+                " (startTime: " + getFromString() + " endTime: " + getToString() + ")";
     }
 }

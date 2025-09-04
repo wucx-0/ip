@@ -74,7 +74,7 @@ public class TaskList {
         for (Task task : tasks) {
             if (task instanceof Deadline) {
                 Deadline deadline = (Deadline) task;
-                if (deadline.getBy().equals(targetDate)) {
+                if (deadline.getDeadline().equals(targetDate)) {
                     matchingTasks.add(task);
                 }
             }
