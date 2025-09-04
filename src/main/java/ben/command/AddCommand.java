@@ -9,6 +9,9 @@ import ben.task.TaskList;
 import ben.task.ToDo;
 import ben.ui.UI;
 
+/**
+ * Command to add new tasks (todo, deadline, event) to the task list.
+ */
 public class AddCommand extends Command {
     private String taskType;
     private String arguments;
