@@ -60,6 +60,13 @@ public class Parser {
             case "due":
                 return new DueCommand(arguments);
 
+            case "find":
+                if (arguments.isEmpty()) {
+                    throw new BenException("Please specify a keyword to search for! Format: find <keyword>");
+                }
+                return new FindCommand(arguments);
+
+
             default:
                 throw new BenException("I'm sorry, say that again?");
         }

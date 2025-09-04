@@ -13,6 +13,9 @@ src/main/resources/docs/
 *.iml
 bin/
 
+# Generaged binary files
+*.jar
+
 /text-ui-test/ACTUAL.TXT
 text-ui-test/EXPECTED-UNIX.TXT
 *.class

@@ -92,6 +92,29 @@ public class TaskList {
         }
     }
 
+    public void findTasksContaining(String keyword, UI ui) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+
+        // Search through all tasks for the keyword (case-insensitive)
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                matchingTasks.add(task);
+            }
+        }
+
+        // Display results
+        if (matchingTasks.isEmpty()) {
+            ui.showMessage("No matching tasks found for: " + keyword);
+        } else {
+            StringBuilder result = new StringBuilder();
+            result.append("Here are the matching tasks in your list:\n");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                result.append(" ").append(i + 1).append(".").append(matchingTasks.get(i)).append("\n");
+            }
+            ui.showMessage(result.toString().trim());
+        }
+    }
+
     private void validateIndex(int index) throws BenException {
         if (index < 1 || index > tasks.size()) {
             throw new BenException("Invalid ben.task number! Please choose a number between 1 and " + tasks.size() + ".");
