@@ -71,7 +71,11 @@ public class Parser {
         }
 
         try {
-            return Integer.parseInt(arguments.trim());
+            int taskNumber = Integer.parseInt(arguments.trim());
+            if (taskNumber <= 0) {
+                throw new BenException("Task number must be a positive number!");
+            }
+            return taskNumber;
         } catch (NumberFormatException e) {
             throw new BenException("ben.task.Task number must be a valid number!");
         }
