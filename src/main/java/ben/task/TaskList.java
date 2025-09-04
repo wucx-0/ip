@@ -10,17 +10,30 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
+/**
+ * Manages a collection of tasks with operations for adding, removing,
+ * marking, and searching tasks. Integrates with storage for data persistence.
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
     private Storage storage;
     private UI ui;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /**
+     * Constructs an empty task list.
+     * Initializes the internal ArrayList and creates a UI instance for display operations.
+     */
     public TaskList() {
         this.tasks = new ArrayList<>();
         this.ui = new UI(); // For showing results
     }
 
+    /**
+     * Constructs a task list with existing tasks loaded from storage.
+     *
+     * @param tasks the list of tasks to initialize the task list with
+     */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
         this.ui = new UI(); // For showing results
@@ -30,16 +43,36 @@ public class TaskList {
         this.storage = storage;
     }
 
+    /**
+     * Adds a new task to the list and automatically saves to storage.
+     *
+     * @param task the task to add to the list
+     * @throws BenException if the task cannot be added or saved to storage
+     */
     public void addTask(Task task) throws BenException {
         tasks.add(task);
         saveToStorage();
     }
 
+    /**
+     * Retrieves a task at the specified 1-based index position.
+     *
+     * @param index the 1-based position of the task to retrieve (1 = first task)
+     * @return the task at the specified position
+     * @throws BenException if the index is less than 1 or greater than the list size
+     */
     public Task getTask(int index) throws BenException {
         validateIndex(index);
         return tasks.get(index - 1);
     }
 
+    /**
+     * Removes and returns the task at the specified index, then saves to storage.
+     *
+     * @param index the 1-based position of the task to delete
+     * @return the deleted task
+     * @throws BenException if the index is invalid or storage save fails
+     */
     public Task deleteTask(int index) throws BenException {
         validateIndex(index);
         Task deletedTask = tasks.remove(index - 1);
@@ -47,6 +80,13 @@ public class TaskList {
         return deletedTask;
     }
 
+    /**
+     * Marks the task at the specified index as completed and saves to storage.
+     *
+     * @param index the 1-based position of the task to mark as done
+     * @return true if the task was successfully marked as completed
+     * @throws BenException if the index is invalid or storage save fails
+     */
     public boolean mark(int index) throws BenException {
         validateIndex(index);
         this.tasks.get(index - 1).markComplete();
@@ -54,6 +94,13 @@ public class TaskList {
         return true;
     }
 
+    /**
+     * Marks the task at the specified index as not completed and saves to storage.
+     *
+     * @param index the 1-based position of the task to mark as not done
+     * @return true if the task was successfully marked as not completed
+     * @throws BenException if the index is invalid or storage save fails
+     */
     public boolean unmark(int index) throws BenException {
         validateIndex(index);
         this.tasks.get(index - 1).markIncomplete();
@@ -61,7 +108,6 @@ public class TaskList {
         return true;
     }
 
-    // Stretch goal: Show tasks due on a specific date
     public void showTasksDueOn(String dateString) throws BenException {
         LocalDate targetDate;
         try {
@@ -104,6 +150,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns the current number of tasks in the list.
+     *
+     * @return the total count of tasks currently stored
+     */
     public int getSize() {
         return this.tasks.size();
     }

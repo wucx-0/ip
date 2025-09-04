@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Manages persistent storage of tasks to and from files.
+ */
 public class Storage {
     private String filePath;
     private static final DateTimeFormatter DATE_STORAGE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -19,6 +22,13 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the configured file path.
+     * Creates necessary directories if they don't exist, returns empty list if file doesn't exist.
+     *
+     * @return list of tasks loaded from storage file
+     * @throws BenException if file reading fails or data is corrupted
+     */
     public ArrayList<Task> loadTasks() throws BenException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -49,6 +59,13 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves all tasks to the configured file path in the specified format.
+     * Creates necessary directories and overwrites existing file content.
+     *
+     * @param tasks the list of tasks to save to storage
+     * @throws BenException if file writing fails or directory creation fails
+     */
     public void saveTasks(ArrayList<Task> tasks) throws BenException {
         File file = new File(filePath);
 

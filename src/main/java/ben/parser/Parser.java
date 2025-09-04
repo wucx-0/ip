@@ -11,8 +11,20 @@ import ben.command.MarkCommand;
 
 import ben.command.*;
 
+/**
+ * Parses user input strings into executable Command objects.
+ * Handles command syntax validation and creates appropriate command instances.
+ */
 public class Parser {
 
+    /**
+     * Parses a complete user input string into an executable Command object.
+     * Validates command syntax and creates the appropriate command instance.
+     *
+     * @param fullCommand the complete user input string to parse
+     * @return a Command object representing the parsed user input
+     * @throws BenException if the command is invalid, unrecognized, or missing required arguments
+     */
     public static Command parse(String fullCommand) throws BenException {
         if (fullCommand == null || fullCommand.trim().isEmpty()) {
             throw new BenException("Enter a ben.command!");
@@ -65,6 +77,15 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses and validates a task number from a string argument.
+     * Ensures the parsed number is a positive integer suitable for task indexing.
+     *
+     * @param arguments the string containing the task number to parse
+     * @param commandType the command type requesting the parsing (used in error messages)
+     * @return the parsed task number as a positive integer
+     * @throws BenException if the string is not a valid positive integer or is empty
+     */
     public static int parseTaskNumber(String arguments, String commandType) throws BenException {
         if (arguments.trim().isEmpty()) {
             throw new BenException("Please specify which ben.task to " + commandType + " (e.g., '" + commandType + " 2').");
