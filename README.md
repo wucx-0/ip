@@ -1,26 +1,52 @@
-# Duke project template
+# Ben Chatbot - Your Personal Task Manager 🐶
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+> "The secret of getting ahead is getting started." – Mark Twain
 
-## Setting up in Intellij
+Ben is a simple, **text-based** task management chatbot that helps you keep track of your todos, deadlines, and events. It's designed to be *intuitive*, ~~complicated~~ **simple**, and ***incredibly*** efficient for managing your daily tasks.
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+## Features
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
+Ben supports three types of tasks:
+* **Todo tasks** - Simple tasks without time constraints
+* **Deadline tasks** - Tasks with specific due dates
+* **Event tasks** - Tasks with start and end times
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+## Getting Started
+
+To use Ben, simply:
+1. Clone this repository
+2. Compile the Java files
+3. Run the `Ben` class
+4. Start adding your tasks!
+
+## Task List Progress
+
+- [x] Implement basic todo functionality
+- [x] Add deadline support with date parsing
+- [x] Create event tasks with time ranges
+- [x] File-based storage system
+- [ ] GUI implementation (coming soon)
+- [ ] Task reminders (planned)
+
+## Usage Examples
+
+Here's how to add a deadline task using the `deadline` command:
+
+```java
+// Example of creating a deadline task
+deadline submit assignment /by 2019-12-25
+```
+
+You can also search for tasks using the `find` keyword, mark tasks as complete with `mark`, or list all tasks with the simple `list` command.
+
+## Technical Implementation
+
+The chatbot follows object-oriented principles with clear separation of concerns:
+* `Task` hierarchy for different task types
+* `Command` pattern for user actions
+* `Storage` system for data persistence
+* Clean `UI` abstraction for user interaction
+
+For more information about Java development best practices, visit the [Oracle Java Documentation](https://docs.oracle.com/en/java/).
+
+**Ben** makes task management ***fast***, **simple**, and **effective**! 😊
