@@ -1,6 +1,0 @@
-T | 0 | read book
-T | 0 | groceries
-T | 0 | read book
-D | 0 | return book | 2019-12-25
-T | 0 | buy groceries
-E | 0 | book club meeting | 2019-12-25T14:00 | 2019-12-25T16:00
