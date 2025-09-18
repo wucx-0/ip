@@ -1,0 +1,2 @@
+D | 1 | submit assignment | 2019-12-25
+E | 0 | project meeting | 2100-12-25T13:00 | 2100-12-25T14:00

@@ -65,49 +65,123 @@ public class GUI {
     }
 
     private String executeAddCommand(Command command) throws BenException {
-        int oldSize = tasks.getSize();
-        command.execute(tasks, null, storage);
-        Task addedTask = tasks.getTask(tasks.getSize());
-        return "Got it. I've added this task:\n   " + addedTask +
-                "\nNow you have " + tasks.getSize() + " tasks in the list.";
+        // Create a mock UI to capture the output
+        StringBuilder result = new StringBuilder();
+        UI mockUI = createMockUI(result);
+
+        command.execute(tasks, mockUI, storage);
+
+        // If no output was captured, format it manually
+        if (result.length() == 0) {
+            Task addedTask = tasks.getTask(tasks.getSize());
+            return "Got it. I've added this task:\n   " + addedTask +
+                    "\nNow you have " + tasks.getSize() + " tasks in the list.";
+        }
+        return result.toString();
     }
 
     private String executeDeleteCommand(Command command) throws BenException {
-        // We need to capture the task before deletion
-        String[] parts = command.getClass().getDeclaredFields()[0].getName().equals("arguments") ?
-                new String[]{""} : new String[]{""};
-        // This is a simplified approach - you might need to modify DeleteCommand
-        // to return the deleted task info
-        command.execute(tasks, null, storage);
-        return "Noted. I've removed the task.\nNow you have " + tasks.getSize() + " tasks in the list.";
+        StringBuilder result = new StringBuilder();
+        UI mockUI = createMockUI(result);
+
+        command.execute(tasks, mockUI, storage);
+
+        if (result.length() == 0) {
+            return "Noted. I've removed the task.\nNow you have " + tasks.getSize() + " tasks in the list.";
+        }
+        return result.toString();
     }
 
     private String executeMarkCommand(Command command) throws BenException {
-        command.execute(tasks, null, storage);
-        return "Nice! I've updated the task status.";
+        StringBuilder result = new StringBuilder();
+        UI mockUI = createMockUI(result);
+
+        command.execute(tasks, mockUI, storage);
+
+        if (result.length() == 0) {
+            return "Task status updated successfully.";
+        }
+        return result.toString();
     }
 
     private String executeFindCommand(Command command) throws BenException {
-        // Capture the output from find command
         StringBuilder result = new StringBuilder();
-        command.execute(tasks, new UI() {
-            @Override
-            public void showMessage(String message) {
-                result.append(message);
-            }
-        }, storage);
+        UI mockUI = createMockUI(result);
+
+        command.execute(tasks, mockUI, storage);
         return result.toString();
     }
 
     private String executeDueCommand(Command command) throws BenException {
         StringBuilder result = new StringBuilder();
-        command.execute(tasks, new UI() {
+        UI mockUI = createMockUI(result);
+
+        command.execute(tasks, mockUI, storage);
+        return result.toString();
+    }
+
+    /**
+     * Creates a mock UI that captures output into a StringBuilder
+     */
+    private UI createMockUI(StringBuilder output) {
+        return new UI() {
             @Override
             public void showMessage(String message) {
-                result.append(message);
+                output.append(message);
             }
-        }, storage);
-        return result.toString();
+
+            @Override
+            public void showTaskList(TaskList tasks) {
+                output.append(tasks.toString());
+            }
+
+            @Override
+            public void showTaskAdded(Task task, int totalTasks) {
+                output.append("Got it. I've added this task:\n   ")
+                        .append(task)
+                        .append("\nNow you have ")
+                        .append(totalTasks)
+                        .append(" tasks in the list.");
+            }
+
+            @Override
+            public void showTaskDeleted(Task task, int remainingTasks) {
+                output.append("Noted. I've removed this task:\n   ")
+                        .append(task)
+                        .append("\nNow you have ")
+                        .append(remainingTasks)
+                        .append(" tasks in the list.");
+            }
+
+            @Override
+            public void showTaskMarkedDone(Task task) {
+                output.append("Nice! I've marked this task as done:\n   ")
+                        .append(task);
+            }
+
+            @Override
+            public void showTaskMarkedNotDone(Task task) {
+                output.append("OK, I've marked this task as not done yet:\n   ")
+                        .append(task);
+            }
+
+            @Override
+            public void showError(String errorMessage) {
+                output.append("OOPS!!! ").append(errorMessage);
+            }
+
+            // Unused methods for mock UI
+            @Override
+            public void showWelcome(String name) {}
+            @Override
+            public void showGoodbye() {}
+            @Override
+            public void showLine() {}
+            @Override
+            public String readCommand() { return ""; }
+            @Override
+            public void close() {}
+        };
     }
 
     private String formatTaskList() {
