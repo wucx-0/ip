@@ -50,7 +50,16 @@ public class TaskList {
      * @throws BenException if the task cannot be added or saved to storage
      */
     public void addTask(Task task) throws BenException {
+        assert task != null : "Task to be added should not be null";
+        assert task.getDescription() != null && !task.getDescription().trim().isEmpty() :
+                "Task description should not be null or empty";
+
+        int oldSize = tasks.size();
         tasks.add(task);
+
+        assert tasks.size() == oldSize + 1 : "Task list size should increase by 1 after addition";
+        assert tasks.get(tasks.size() - 1) == task : "Last task should be the one just added";
+
         saveToStorage();
     }
 
@@ -63,6 +72,8 @@ public class TaskList {
      */
     public Task getTask(int index) throws BenException {
         validateIndex(index);
+        assert index >= 1 && index <= tasks.size() : "Index should be validated before reaching this point";
+        assert tasks.get(index - 1) != null : "Task at valid index should never be null";
         return tasks.get(index - 1);
     }
 
@@ -75,7 +86,13 @@ public class TaskList {
      */
     public Task deleteTask(int index) throws BenException {
         validateIndex(index);
+        int oldSize = tasks.size();
+        assert oldSize > 0 : "Cannot delete from empty task list";
+
         Task deletedTask = tasks.remove(index - 1);
+        assert deletedTask != null : "Deleted task should not be null";
+        assert tasks.size() == oldSize - 1 : "Task list size should decrease by 1 after deletion";
+
         saveToStorage();
         return deletedTask;
     }
@@ -89,7 +106,15 @@ public class TaskList {
      */
     public boolean mark(int index) throws BenException {
         validateIndex(index);
-        this.tasks.get(index - 1).markComplete();
+        Task task = this.tasks.get(index - 1);
+        assert task != null : "Task at valid index should not be null";
+
+        boolean wasComplete = task.isComplete();
+        task.markComplete();
+
+        assert task.isComplete() : "Task should be marked as complete after calling markComplete()";
+        assert task.isComplete() != wasComplete || wasComplete : "Task completion status should change or was already complete";
+
         saveToStorage();
         return true;
     }
