@@ -8,6 +8,7 @@ import ben.command.DueCommand;
 import ben.command.ExitCommand;
 import ben.command.ListCommand;
 import ben.command.MarkCommand;
+import ben.command.SnoozeCommand;
 
 import ben.command.*;
 
@@ -81,6 +82,12 @@ public class Parser {
                     throw new BenException("Please specify a keyword to search for! Format: find <keyword>");
                 }
                 return new FindCommand(arguments);
+
+            case "snooze":
+                if (arguments.isEmpty()) {
+                    throw new BenException("Please specify which task to snooze! Format: snooze <task_number> <new_date> or snooze <task_number> +<days>");
+                }
+                return new SnoozeCommand(arguments);
 
             default:
                 throw new BenException("I'm sorry, say that again?");

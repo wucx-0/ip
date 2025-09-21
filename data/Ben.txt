@@ -1,2 +1,4 @@
-D | 0 | eat fries | 2002-07-22
-D | 0 | eat burger | 2021-08-24
+T | 0 | ate
+T | 0 | eaten
+E | 0 | Team meeting | 2024-11-22T14:00 | 2024-11-22T15:00
+E | 0 | Team meeting | 2024-11-22T14:00 | 2024-11-22T15:00
