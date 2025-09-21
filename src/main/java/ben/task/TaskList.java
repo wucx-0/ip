@@ -9,6 +9,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 
 /**
  * Manages a collection of tasks with operations for adding, removing,
@@ -141,15 +145,12 @@ public class TaskList {
             throw new BenException("Invalid date format! Please use yyyy-mm-dd format (e.g., 2019-12-25)");
         }
 
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task instanceof Deadline) {
-                Deadline deadline = (Deadline) task;
-                if (deadline.getDeadline().equals(targetDate)) {
-                    matchingTasks.add(task);
-                }
-            }
-        }
+        List<Task> matchingTasks = this.tasks.stream()
+                .filter(task -> task instanceof Deadline)
+                .map(task -> (Deadline) task)
+                .filter(deadline -> deadline.getDeadline().equals(targetDate))
+                .collect(Collectors.toList());
+
 
         if (matchingTasks.isEmpty()) {
             ui.showMessage("No deadlines found for " + targetDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy")));
@@ -171,26 +172,56 @@ public class TaskList {
      * @param ui the UI component used to display search results
      */
     public void findTasksContaining(String keyword, UI ui) {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-
-        // Search through all tasks for the keyword (case-insensitive)
-        for (Task task : tasks) {
-            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                matchingTasks.add(task);
-            }
-        }
+        List<Task> matchingTasks = tasks.stream()
+                .filter(task -> task.getDescription().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toList());
 
         // Display results
         if (matchingTasks.isEmpty()) {
             ui.showMessage("No matching tasks found for: " + keyword);
         } else {
-            StringBuilder result = new StringBuilder();
-            result.append("Here are the matching tasks in your list:\n");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                result.append(" ").append(i + 1).append(".").append(matchingTasks.get(i)).append("\n");
-            }
-            ui.showMessage(result.toString().trim());
+            // Use Streams to format results with numbering
+            String result = "Here are the matching tasks in your list:\n" +
+                    IntStream.range(0, matchingTasks.size())
+                            .mapToObj(i -> " " + (i + 1) + "." + matchingTasks.get(i))
+                            .collect(Collectors.joining("\n"));
+
+            ui.showMessage(result);
         }
+    }
+
+    /**
+     * Gets all completed tasks using Streams.
+     *
+     * @return a list of all completed tasks
+     */
+    public List<Task> getCompletedTasks() {
+        return tasks.stream()
+                .filter(Task::isComplete)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all pending (incomplete) tasks using Streams.
+     *
+     * @return a list of all pending tasks
+     */
+    public List<Task> getPendingTasks() {
+        return tasks.stream()
+                .filter(task -> !task.isComplete())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets tasks by type using Streams.
+     *
+     * @param taskType the type identifier ("T", "D", "E")
+     * @return a list of tasks matching the specified type
+     */
+    public List<Task> getTasksByType(String taskType) {
+        return tasks.stream()
+                .filter(task -> task.getType().equals(taskType))
+                .collect(Collectors.toList());
     }
 
     private void validateIndex(int index) throws BenException {

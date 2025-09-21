@@ -10,6 +10,10 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Manages persistent storage of tasks to and from files.
@@ -30,7 +34,6 @@ public class Storage {
      * @throws BenException if file reading fails or data is corrupted
      */
     public ArrayList<Task> loadTasks() throws BenException {
-        ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
 
         // Create directory if it doesn't exist
@@ -41,22 +44,35 @@ public class Storage {
 
         // Return empty list if file doesn't exist
         if (!file.exists()) {
-            return tasks;
+            return new ArrayList<>();
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                Task task = parseTask(line.trim());
-                if (task != null) {
-                    tasks.add(task);
-                }
-            }
+        try  {
+            // Use Streams to read, filter, and parse lines
+            List<Task> tasks = Files.lines(Paths.get(filePath))
+                    .map(String::trim)
+                    .filter(line -> !line.isEmpty())
+                    .map(this::parseTaskSafely)
+                    .filter(task -> task != null)
+                    .collect(Collectors.toList());
+
+            return new ArrayList<>(tasks);
         } catch (IOException e) {
             throw new BenException("Error loading tasks from file: " + e.getMessage());
         }
+    }
 
-        return tasks;
+    /**
+     * Safely parses a task line, returning null if parsing fails.
+     * This helper method allows the Stream to continue processing even if some lines are corrupted.
+     */
+    private Task parseTaskSafely(String line) {
+        try {
+            return parseTask(line);
+        } catch (BenException e) {
+            System.err.println("Warning: Skipping corrupted task entry: " + line);
+            return null;
+        }
     }
 
     /**
@@ -77,14 +93,15 @@ public class Storage {
             assert created || parentDir.exists() : "Parent directory should exist after mkdirs()";
         }
 
-        try (PrintWriter writer = new PrintWriter(file)) {
-            for (Task task : tasks) {
-                assert task != null : "Individual task in list should not be null";
-                String formatted = formatTask(task);
-                assert formatted != null && !formatted.trim().isEmpty() :
-                        "Formatted task string should not be null or empty";
-                writer.println(formatted);
-            }
+
+        try {
+            // Use Streams to format all tasks and write them to file
+            List<String> formattedTasks = tasks.stream()
+                    .map(this::formatTask)
+                    .collect(Collectors.toList());
+
+            Files.write(Paths.get(filePath), formattedTasks);
+
         } catch (IOException e) {
             throw new BenException("Error saving tasks to file: " + e.getMessage());
         }
