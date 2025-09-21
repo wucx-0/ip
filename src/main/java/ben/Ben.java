@@ -27,13 +27,25 @@ public class Ben {
     public Ben() {
         ui = new UI();
         storage = new Storage(FILE_PATH);
+
+        assert ui != null : "UI should be initialized";
+        assert storage != null : "Storage should be initialized";
+        assert FILE_PATH != null && !FILE_PATH.trim().isEmpty() : "File path should be valid";
+
         try {
             tasks = new TaskList(storage.loadTasks());
         } catch (BenException e) {
             ui.showError("Problem loading tasks: " + e.getMessage());
             tasks = new TaskList();
         }
+
+        assert tasks != null : "TaskList should always be initialized";
+
         tasks.setStorage(storage);
+
+        // Verify the wiring is correct
+        assert tasks != null && ui != null && storage != null :
+                "All core components should be initialized";
     }
 
     /**

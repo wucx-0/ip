@@ -30,10 +30,14 @@ public class Parser {
             throw new BenException("Enter a ben.command!");
         }
 
+        assert fullCommand != null : "Command should not be null after null check";
+
         String command = fullCommand.trim();
         String[] parts = command.split("\\s+", 2); // Split into ben.command and arguments
         String commandWord = parts[0].toLowerCase();
         String arguments = parts.length > 1 ? parts[1] : "";
+
+        assert parts.length >= 1 : "Split command should have at least one part";
 
         switch (commandWord) {
             case "bye":
@@ -78,7 +82,6 @@ public class Parser {
                 }
                 return new FindCommand(arguments);
 
-
             default:
                 throw new BenException("I'm sorry, say that again?");
         }
@@ -95,17 +98,22 @@ public class Parser {
      */
     public static int parseTaskNumber(String arguments, String commandType) throws BenException {
         if (arguments.trim().isEmpty()) {
-            throw new BenException("Please specify which ben.task to " + commandType + " (e.g., '" + commandType + " 2').");
+            throw new BenException("Please specify which task to " + commandType);
         }
+
+        assert arguments != null : "Arguments should not be null after empty check";
+        assert commandType != null : "Command type should not be null";
 
         try {
             int taskNumber = Integer.parseInt(arguments.trim());
             if (taskNumber <= 0) {
                 throw new BenException("Task number must be a positive number!");
             }
+
+            assert taskNumber > 0 : "Parsed task number should be positive";
             return taskNumber;
         } catch (NumberFormatException e) {
-            throw new BenException("ben.task.Task number must be a valid number!");
+            throw new BenException("Task number must be a valid number!");
         }
     }
 }

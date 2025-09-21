@@ -8,19 +8,19 @@ import ben.storage.Storage;
 
 public class MarkCommand extends Command {
     private String arguments;
-    private boolean isMarking; // true for mark, false for unmark
+    private boolean isMarked; // true for mark, false for unmark
 
-    public MarkCommand(String arguments, boolean isMarking) {
+    public MarkCommand(String arguments, boolean isMarked) {
         this.arguments = arguments;
-        this.isMarking = isMarking;
+        this.isMarked = isMarked;
     }
 
     @Override
     public void execute(TaskList tasks, UI ui, Storage storage) throws BenException {
-        String commandType = isMarking ? "mark" : "unmark";
+        String commandType = isMarked ? "mark" : "unmark";
         int taskNumber = Parser.parseTaskNumber(arguments, commandType);
 
-        if (isMarking) {
+        if (isMarked) {
             tasks.mark(taskNumber);
             Task task = tasks.getTask(taskNumber);
             ui.showTaskMarkedDone(task);

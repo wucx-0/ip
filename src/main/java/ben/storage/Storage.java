@@ -83,13 +83,16 @@ public class Storage {
      * @throws BenException if file writing fails or directory creation fails
      */
     public void saveTasks(ArrayList<Task> tasks) throws BenException {
-        File file = new File(filePath);
+        assert tasks != null : "Task list should not be null when saving";
+        assert filePath != null && !filePath.trim().isEmpty() : "File path should be set";
 
-        // Create directory if it doesn't exist
+        File file = new File(filePath);
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
-            parentDir.mkdirs();
+            boolean created = parentDir.mkdirs();
+            assert created || parentDir.exists() : "Parent directory should exist after mkdirs()";
         }
+
 
         try {
             // Use Streams to format all tasks and write them to file
@@ -98,9 +101,12 @@ public class Storage {
                     .collect(Collectors.toList());
 
             Files.write(Paths.get(filePath), formattedTasks);
+
         } catch (IOException e) {
             throw new BenException("Error saving tasks to file: " + e.getMessage());
         }
+
+        assert file.exists() : "File should exist after successful save operation";
     }
 
     private Task parseTask(String line) throws BenException {
@@ -108,15 +114,27 @@ public class Storage {
             return null;
         }
 
+        assert line != null : "Line should not be null when parsing";
         String[] parts = line.split(" \\| ");
+
         if (parts.length < 3) {
             // Handle corrupted data - skip this line
             return null;
         }
 
+        assert parts.length >= 3 : "Valid task line should have at least 3 parts";
+
         String type = parts[0];
+        String isDoneStr = parts[1];
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
+
+        assert type != null && (type.equals("T") || type.equals("D") || type.equals("E")) :
+                "Task type should be T, D, or E";
+        assert isDoneStr.equals("0") || isDoneStr.equals("1") :
+                "Task completion status should be 0 or 1";
+        assert description != null && !description.trim().isEmpty() :
+                "Task description should not be null or empty";
 
         Task task = null;
 
