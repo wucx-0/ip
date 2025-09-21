@@ -14,8 +14,14 @@ public abstract class Task {
      * @param description the description text for this task
      */
     public Task(String description) {
+        assert description != null : "Task description should not be null";
+        assert !description.trim().isEmpty() : "Task description should not be empty";
+
         this.description = description;
         this.isComplete = false;
+
+        assert this.description.equals(description) : "Description should be set correctly";
+        assert !this.isComplete : "New task should not be marked as complete";
     }
 
     /**
@@ -31,14 +37,20 @@ public abstract class Task {
      * Marks this task as completed.
      */
     public void markComplete() {
+        boolean wasComplete = this.isComplete;
         this.isComplete = true;
+        assert this.isComplete : "Task should be marked complete";
+        assert this.isComplete != wasComplete || wasComplete : "Completion status should change";
     }
 
     /**
      * Marks this task as not completed.
      */
     public void markIncomplete() {
+        boolean wasComplete = this.isComplete;
         this.isComplete = false;
+        assert !this.isComplete : "Task should be marked incomplete";
+        assert this.isComplete != wasComplete || !wasComplete : "Completion status should change";
     }
 
     /**
