@@ -102,6 +102,15 @@ public class UI {
     }
 
     /**
+     * Displays confirmation that a task has been successfully snoozed.
+     */
+    public void showTaskSnoozed(Task originalTask, Task snoozedTask) {
+        System.out.println(" Got it! I've snoozed this task:");
+        System.out.println("   From: " + originalTask);
+        System.out.println("   To:   " + snoozedTask);
+    }
+
+    /**
      * Reads a line of user input from the console.
      *
      * @return the user's input as a string

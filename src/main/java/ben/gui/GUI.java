@@ -60,6 +60,8 @@ public class GUI {
             return executeFindCommand(command);
         } else if (command.getClass().getSimpleName().equals("DueCommand")) {
             return executeDueCommand(command);
+        } else if (command.getClass().getSimpleName().equals("SnoozeCommand")) {
+            return executeSnoozeCommand(command);
         }
         return "Command executed successfully.";
     }
@@ -120,6 +122,13 @@ public class GUI {
         return result.toString();
     }
 
+    private String executeSnoozeCommand(Command command) throws BenException {
+        StringBuilder result = new StringBuilder();
+        UI mockUI = createMockUI(result);
+        command.execute(tasks, mockUI, storage);
+        return result.length() > 0 ? result.toString() : "Task snoozed successfully.";
+    }
+
     /**
      * Creates a mock UI that captures output into a StringBuilder
      */
@@ -163,6 +172,13 @@ public class GUI {
             public void showTaskMarkedNotDone(Task task) {
                 output.append("OK, I've marked this task as not done yet:\n   ")
                         .append(task);
+            }
+
+            @Override
+            public void showTaskSnoozed(Task originalTask, Task snoozedTask) {
+                output.append("Got it! I've snoozed this task:\n")
+                        .append("   From: ").append(originalTask).append("\n")
+                        .append("   To:   ").append(snoozedTask);
             }
 
             @Override
