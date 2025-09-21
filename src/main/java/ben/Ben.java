@@ -3,13 +3,12 @@ package ben;
 import ben.command.Command;
 import ben.parser.Parser;
 import ben.storage.Storage;
-import ben.task.Task;
 import ben.task.TaskList;
 import ben.ui.UI;
 
 /**
  * Main application class for the Ben chatbot.
- * Supports both CLI and GUI modes.
+ * Handles CLI mode only - GUI mode is handled by separate GUI class.
  *
  * @author [Your Name]
  * @version 2.0
@@ -72,91 +71,6 @@ public class Ben {
 
         userInterface.showGoodbye();
         userInterface.close();
-    }
-
-    /**
-     * Processes a single command and returns the result.
-     * This method is used by GUI implementations that don't need the full CLI loop.
-     *
-     * @param input the command string to process
-     * @return the response message from executing the command
-     */
-    public String processCommand(String input) {
-        try {
-            Command c = Parser.parse(input);
-
-            // For commands that need special handling in non-CLI mode
-            if (c.isExit()) {
-                return "Bye. Hope to see you again soon!";
-            }
-
-            // Create a mock UI to capture output
-            StringBuilder output = new StringBuilder();
-            UI mockUI = new UI() {
-                @Override
-                public void showMessage(String message) {
-                    output.append(message);
-                }
-
-                @Override
-                public void showTaskList(TaskList tasks) {
-                    output.append(tasks.toString());
-                }
-
-                @Override
-                public void showTaskAdded(Task task, int totalTasks) {
-                    output.append("Got it. I've added this task:\n   ")
-                            .append(task)
-                            .append("\nNow you have ")
-                            .append(totalTasks)
-                            .append(" tasks in the list.");
-                }
-
-                @Override
-                public void showTaskDeleted(Task task, int remainingTasks) {
-                    output.append("Noted. I've removed this task:\n   ")
-                            .append(task)
-                            .append("\nNow you have ")
-                            .append(remainingTasks)
-                            .append(" tasks in the list.");
-                }
-
-                @Override
-                public void showTaskMarkedDone(Task task) {
-                    output.append("Nice! I've marked this task as done:\n   ")
-                            .append(task);
-                }
-
-                @Override
-                public void showTaskMarkedNotDone(Task task) {
-                    output.append("OK, I've marked this task as not done yet:\n   ")
-                            .append(task);
-                }
-
-                @Override
-                public void showError(String errorMessage) {
-                    output.append("OOPS!!! ").append(errorMessage);
-                }
-
-                // Unused methods for mock UI
-                @Override
-                public void showWelcome(String name) {}
-                @Override
-                public void showGoodbye() {}
-                @Override
-                public void showLine() {}
-                @Override
-                public String readCommand() { return ""; }
-                @Override
-                public void close() {}
-            };
-
-            c.execute(tasks, mockUI, storage);
-            return output.toString();
-
-        } catch (BenException e) {
-            return "OOPS!!! " + e.getMessage();
-        }
     }
 
     /**
