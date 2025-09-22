@@ -36,6 +36,9 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+
+        this.setMaxWidth(Double.MAX_VALUE);
+        this.setPrefWidth(USE_COMPUTED_SIZE);
     }
 
     /**
@@ -49,7 +52,10 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        var db = new DialogBox(text, img);
+        // User messages align to the right
+        db.setAlignment(Pos.TOP_RIGHT);
+        return db;
     }
 
     public static DialogBox getBenDialog(String text, Image img) {

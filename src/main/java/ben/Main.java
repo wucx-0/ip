@@ -21,8 +21,13 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+
             stage.setScene(scene);
             stage.setTitle("Ben Chatbot");
+            stage.setResizable(true);
+            stage.setMinWidth(300);
+            stage.setMinHeight(400);
+
             fxmlLoader.<MainWindow>getController().setBen(ben);
             stage.show();
         } catch (IOException e) {

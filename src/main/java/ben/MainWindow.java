@@ -31,6 +31,8 @@ public class MainWindow extends AnchorPane {
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
 
+        dialogContainer.prefWidthProperty().bind(scrollPane.widthProperty().subtract(2));
+
         // Add welcome message
         dialogContainer.getChildren().add(
                 DialogBox.getBenDialog("Hello! I'm Ben\nWhat can I do for you?", benImage)
