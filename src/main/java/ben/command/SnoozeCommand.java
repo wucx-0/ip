@@ -169,6 +169,7 @@ public class SnoozeCommand extends Command {
 
     /**
      * Advanced event snooze - handles separate start/end times or /from modifier
+     * AI is used to assist the creation of more command line argument involving cmd.
      */
     private Event snoozeEventAdvanced(Event event, String[] parts) throws BenException {
         if (parts[1].equals("/from")) {
